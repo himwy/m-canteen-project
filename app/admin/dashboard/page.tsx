@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { getAllOrders, updateOrderStatus, type Order, type OrderStatus } from "@/lib/orders"
-import { isAdmin } from "@/lib/auth"
+import { isAdmin, logout } from "@/lib/auth"
 
 export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -60,6 +60,15 @@ export default function AdminDashboard() {
     }
   }
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   const receivedOrders = orders.filter(o => o.status === 'received');
   const preparingOrders = orders.filter(o => o.status === 'preparing');
   const readyOrders = orders.filter(o => o.status === 'ready');
@@ -101,12 +110,18 @@ export default function AdminDashboard() {
               <p className="text-neutral-500 text-sm">Manage orders and operations</p>
             </div>
             <div className="flex items-center gap-3">
+              <Link href="/admin/menu" className="border border-neutral-200 rounded-lg bg-transparent px-3 py-1.5 text-sm font-medium hover:bg-neutral-50 transition-colors">
+                Menu
+              </Link>
               <Link href="/admin/api" className="border border-neutral-200 rounded-lg bg-transparent px-3 py-1.5 text-sm font-medium hover:bg-neutral-50 transition-colors">
                 API Access
               </Link>
-              <Link href="/" className="text-neutral-500 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-neutral-50 transition-colors">
+              <button 
+                onClick={handleLogout}
+                className="text-neutral-500 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-neutral-50 transition-colors"
+              >
                 Logout
-              </Link>
+              </button>
             </div>
           </div>
 

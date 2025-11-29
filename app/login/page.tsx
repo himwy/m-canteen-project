@@ -2,8 +2,8 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState, FormEvent } from "react"
-import { login, isAdmin } from "@/lib/auth"
+import { useState, useEffect, FormEvent } from "react"
+import { login, isAdmin, isAuthenticated } from "@/lib/auth"
 import { useAuth } from "@/contexts/AuthContext"
 
 export default function LoginPage() {
@@ -13,6 +13,31 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  // Check if already logged in when page loads
+  useEffect(() => {
+    async function checkExistingSession() {
+      try {
+        const adminStatus = await isAdmin();
+        if (adminStatus) {
+          router.push("/admin/dashboard");
+          return;
+        }
+        
+        const authenticated = await isAuthenticated();
+        if (authenticated) {
+          router.push("/menu");
+          return;
+        }
+      } catch (error) {
+        // Not logged in, show login form
+      } finally {
+        setChecking(false);
+      }
+    }
+    checkExistingSession();
+  }, [router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -20,13 +45,6 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // Check if already logged in
-      const alreadyAdmin = await isAdmin();
-      if (alreadyAdmin) {
-        router.push("/admin/dashboard");
-        return;
-      }
-
       await login(email, password);
       await refreshUser();
       
@@ -60,7 +78,12 @@ export default function LoginPage() {
           <p className="text-neutral-500">Login to your account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {checking ? (
+          <div className="text-center py-12">
+            <p className="text-neutral-500">Checking session...</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
               {error}
@@ -112,6 +135,7 @@ export default function LoginPage() {
             </Link>
           </p>
         </form>
+        )}
       </div>
     </main>
   )

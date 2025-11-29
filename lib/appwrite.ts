@@ -1,4 +1,4 @@
-import { Client, Databases, Account } from 'appwrite';
+import { Client, Databases, Account, Storage } from 'appwrite';
 
 const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || '';
 const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || '';
@@ -9,6 +9,7 @@ const client = new Client()
 
 export const databases = new Databases(client);
 export const account = new Account(client);
+export const storage = new Storage(client);
 
 export const DATABASE_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || '';
 export const ORDERS_COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_ORDERS_COLLECTION_ID || 'orders';
