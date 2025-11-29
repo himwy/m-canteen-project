@@ -111,7 +111,12 @@ export default function MenuPage() {
                       className="w-28 h-28 rounded-xl object-cover shrink-0"
                     />
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-neutral-900 mb-1">{item.name}</h3>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-medium text-neutral-900">{item.name}</h3>
+                        {item.hasDiscountedDrinks && (
+                          <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full font-medium">🥤 Drink discount</span>
+                        )}
+                      </div>
                       {item.calories && (
                         <p className="text-xs text-neutral-400 mb-2">{item.calories} cal</p>
                       )}

@@ -59,12 +59,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
   };
 
-  const hasMealWithDiscountedDrinks = items.some(item => item.type === 'meal' && item.hasDiscountedDrinks);
+  // Count meals with discount and total drinks
+  const mealsWithDiscountCount = items.reduce((count, item) => 
+    item.type === 'meal' && item.hasDiscountedDrinks ? count + item.quantity : count, 0
+  );
+  const totalDrinks = items.reduce((count, item) => 
+    item.type === 'drink' ? count + item.quantity : count, 0
+  );
   
   const total = items.reduce((sum, item) => {
-    // If it's a drink and there's a meal with discounted drinks in cart, use discounted price
-    if (item.type === 'drink' && hasMealWithDiscountedDrinks && item.discountedPrice) {
-      return sum + item.discountedPrice * item.quantity;
+    // If it's a drink, apply discount to min(drinks, meals with discount)
+    if (item.type === 'drink' && item.discountedPrice) {
+      const discountedDrinkCount = Math.min(totalDrinks, mealsWithDiscountCount);
+      const drinksProcessedSoFar = items
+        .filter(i => i.type === 'drink' && items.indexOf(i) < items.indexOf(item))
+        .reduce((c, i) => c + i.quantity, 0);
+      
+      const thisItemDiscounted = Math.max(0, Math.min(item.quantity, discountedDrinkCount - drinksProcessedSoFar));
+      const thisItemRegular = item.quantity - thisItemDiscounted;
+      
+      return sum + (thisItemDiscounted * item.discountedPrice) + (thisItemRegular * item.price);
     }
     return sum + item.price * item.quantity;
   }, 0);

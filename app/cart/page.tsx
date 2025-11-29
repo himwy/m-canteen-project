@@ -9,7 +9,9 @@ import { useState } from "react"
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, total, itemCount } = useCart();
   const router = useRouter();
-  const hasMealWithDiscountedDrinks = items.some(item => item.type === 'meal' && item.hasDiscountedDrinks);
+  const mealsWithDiscountCount = items.reduce((count, item) => 
+    item.type === 'meal' && item.hasDiscountedDrinks ? count + item.quantity : count, 0
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCheckout = async () => {
@@ -85,7 +87,14 @@ export default function CartPage() {
         ) : (
           <>
             <div className="space-y-4 mb-6">
-              {items.map((item) => (
+              {items.map((item, index) => {
+                // Calculate how many drinks have been processed before this one
+                const drinksBeforeThis = items.slice(0, index).reduce((count, i) => 
+                  i.type === 'drink' ? count + i.quantity : count, 0
+                );
+                const isDiscounted = item.type === 'drink' && drinksBeforeThis < mealsWithDiscountCount;
+                
+                return (
                 <div key={item.id} className="bg-white border border-neutral-100 rounded-2xl p-4">
                   <div className="flex gap-4">
                     {item.image && (
@@ -96,8 +105,13 @@ export default function CartPage() {
                       />
                     )}
                     <div className="flex-1">
-                      <h3 className="font-medium text-neutral-900 mb-2">{item.name}</h3>
-                      {item.type === 'drink' && hasMealWithDiscountedDrinks && item.discountedPrice && (
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-medium text-neutral-900">{item.name}</h3>
+                        {item.type === 'meal' && item.hasDiscountedDrinks && (
+                          <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full">🥤 Drink discount</span>
+                        )}
+                      </div>
+                      {item.type === 'drink' && isDiscounted && item.discountedPrice && (
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-xs text-neutral-400 line-through">HK$ {item.originalPrice}</span>
                           <span className="text-xs text-green-600 font-medium">Discounted with meal!</span>
@@ -105,7 +119,7 @@ export default function CartPage() {
                       )}
                       <div className="flex items-center justify-between">
                         <span className="text-lg font-semibold text-[#86a349]">
-                          HK$ {item.type === 'drink' && hasMealWithDiscountedDrinks && item.discountedPrice ? item.discountedPrice : item.price}
+                          HK$ {item.type === 'drink' && isDiscounted && item.discountedPrice ? item.discountedPrice : item.price}
                         </span>
                         <div className="flex items-center gap-3">
                           <button
@@ -134,7 +148,8 @@ export default function CartPage() {
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
 
             <div className="bg-neutral-50 rounded-2xl p-6 mb-6">
