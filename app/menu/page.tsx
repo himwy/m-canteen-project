@@ -1,5 +1,10 @@
+"use client"
+
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import { useCart } from "@/contexts/CartContext"
+import { useAuth } from "@/contexts/AuthContext"
+import { logout } from "@/lib/auth"
 
 // Mock menu data
 const menuItems = [
@@ -42,6 +47,19 @@ const menuItems = [
 ]
 
 export default function MenuPage() {
+  const { addItem, itemCount } = useCart();
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push('/');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-white pb-20">
       <div className="sticky top-0 z-10 bg-white border-b border-neutral-100">
@@ -49,17 +67,14 @@ export default function MenuPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-xl font-semibold text-neutral-900">Dashboard</h1>
+              {user && <p className="text-sm text-neutral-500">Hi, {user.name}!</p>}
             </div>
             <div className="flex items-center gap-3">
-              <button className="text-neutral-500">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
+              <button 
+                onClick={handleLogout}
+                className="text-neutral-500 hover:text-neutral-900 text-sm"
+              >
+                Logout
               </button>
               <Link href="/cart" className="relative">
                 <svg className="w-6 h-6 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,9 +85,11 @@ export default function MenuPage() {
                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                   />
                 </svg>
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#86a349] text-white text-xs rounded-full flex items-center justify-center">
-                  2
-                </span>
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#86a349] text-white text-xs rounded-full flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
               </Link>
             </div>
           </div>
@@ -108,15 +125,16 @@ export default function MenuPage() {
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-neutral-900 mb-1">{item.name}</h3>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs text-[#86a349]">★★★</span>
-                    <span className="text-xs text-neutral-500">{item.tag}</span>
                     <span className="text-xs text-neutral-400">{item.calories}</span>
                   </div>
                   <div className="flex items-center justify-between mt-3">
-                    <span className="text-lg font-semibold text-[#86a349]">€ {item.price}</span>
-                    <Button size="sm" className="bg-[#86a349] hover:bg-[#748f3e] text-white rounded-lg h-9 px-6">
+                    <span className="text-lg font-semibold text-[#86a349]">HK$ {item.price}</span>
+                    <button 
+                      onClick={() => addItem({ id: item.id, name: item.name, price: item.price, image: item.image })}
+                      className="bg-[#86a349] hover:bg-[#748f3e] text-white rounded-lg h-9 px-6 text-sm font-medium transition-colors"
+                    >
                       ADD ITEM
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </div>

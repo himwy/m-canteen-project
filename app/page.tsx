@@ -1,6 +1,5 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
 
 export default function HomePage() {
   return (
@@ -17,25 +16,16 @@ export default function HomePage() {
 
         {/* Action Buttons */}
         <div className="space-y-3">
-          <Link href="/login" className="block">
-            <Button className="w-full h-12 text-base bg-[#86a349] hover:bg-[#748f3e] text-white rounded-xl">
-              Login
-            </Button>
+          <Link href="/login" className="w-full h-12 text-base bg-[#86a349] hover:bg-[#748f3e] text-white rounded-xl flex items-center justify-center font-medium transition-colors">
+            Login
           </Link>
 
-          <Link href="/register" className="block">
-            <Button
-              variant="outline"
-              className="w-full h-12 text-base border-2 border-neutral-200 bg-white hover:bg-neutral-50 rounded-xl"
-            >
-              Register as Student
-            </Button>
+          <Link href="/register" className="w-full h-12 text-base border-2 border-neutral-200 bg-white hover:bg-neutral-50 rounded-xl flex items-center justify-center font-medium transition-colors">
+            Register as Student
           </Link>
 
-          <Link href="/admin/login" className="block">
-            <Button variant="ghost" className="w-full h-12 text-base text-neutral-500 hover:bg-neutral-50 rounded-xl">
-              Admin Login
-            </Button>
+          <Link href="/admin/login" className="w-full h-12 text-base text-neutral-500 hover:bg-neutral-50 rounded-xl flex items-center justify-center font-medium transition-colors">
+            Admin Login
           </Link>
         </div>
       </div>
