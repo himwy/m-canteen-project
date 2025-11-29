@@ -155,8 +155,14 @@ export default function OrdersPage() {
 
                         {order.status === 'ready' && (
                           <div className="mt-4 p-4 bg-green-50 rounded-xl border border-green-200">
-                            <p className="text-sm text-green-800 font-medium">
-                              ✓ Your order is ready! Please proceed to the counter for pickup and payment.
+                            <p className="text-sm text-green-800 font-medium mb-2">
+                              ✓ Your order is ready for pickup!
+                            </p>
+                            <p className="text-sm text-green-700">
+                              Please collect your order at the counter and pay <span className="font-semibold">HK$ {order.total}</span> after you finish your meal.
+                            </p>
+                            <p className="text-xs text-green-600 mt-2">
+                              Order #{order.orderNumber}
                             </p>
                           </div>
                         )}
@@ -188,6 +194,20 @@ export default function OrdersPage() {
                             </span>
                           </div>
                         </div>
+                        
+                        {order.status === 'taken-unpaid' && (
+                          <div className="mt-4 p-4 bg-orange-50 rounded-xl border border-orange-200">
+                            <p className="text-sm text-orange-800 font-medium mb-2">
+                              📦 Order picked up
+                            </p>
+                            <p className="text-sm text-orange-700">
+                              Please pay <span className="font-semibold">HK$ {order.total}</span> at the counter after your meal.
+                            </p>
+                            <p className="text-xs text-orange-600 mt-2">
+                              Order #{order.orderNumber}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     );
                   })}

@@ -96,7 +96,6 @@ export default function MenuPage() {
         {menuItems.filter(item => item.category === 'Meals').length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-neutral-900 mb-4">Meals</h2>
-            <p className="text-sm text-neutral-500 mb-4">Drinks are discounted when ordered with a meal</p>
             <div className="grid grid-cols-1 gap-5">
               {menuItems.filter(item => item.category === 'Meals').map((item) => (
                 <div
@@ -155,10 +154,6 @@ export default function MenuPage() {
                     />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-neutral-900 mb-1">{drink.name}</h3>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs text-neutral-400 line-through">HK$ {drink.originalPrice}</span>
-                        <span className="text-xs text-green-600 font-medium">HK$ {drink.discountedPrice} with meal</span>
-                      </div>
                       <div className="flex items-center justify-between mt-3">
                         <span className="text-lg font-semibold text-[#86a349]">HK$ {drink.originalPrice}</span>
                         <button 
