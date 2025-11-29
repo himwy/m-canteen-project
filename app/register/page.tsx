@@ -126,17 +126,14 @@ export default function RegisterPage() {
               className="w-full h-12 border border-neutral-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#86a349] bg-white"
             >
               <option value="">Select programme</option>
-              <option value="BA-AHCC">BA-AHCC</option>
-              <option value="BA-GCS">BA-GCS</option>
-              <option value="BA-CSD">BA-CSD</option>
-              <option value="BSc-DS">BSc-DS</option>
-              <option value="BSc-CS">BSc-CS</option>
+              <option value="BSc-AC">BSc-AC</option>
+              <option value="Others">Others</option>
             </select>
           </div>
 
           <div className="space-y-2">
             <label htmlFor="yearOfEntrance" className="text-sm text-neutral-700 font-medium">
-              Year of Entrance <span className="text-[#86a349]">*</span>
+              Year of Study <span className="text-[#86a349]">*</span>
             </label>
             <select 
               id="yearOfEntrance" 
@@ -147,10 +144,11 @@ export default function RegisterPage() {
               className="w-full h-12 border border-neutral-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#86a349] bg-white"
             >
               <option value="">Select year</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
+              <option value="Year 1">Year 1</option>
+              <option value="Year 2">Year 2</option>
+              <option value="Year 3">Year 3</option>
+              <option value="Year 4">Year 4</option>
+              <option value="Others">Others</option>
             </select>
           </div>
 
