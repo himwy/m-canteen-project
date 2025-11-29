@@ -58,7 +58,7 @@ export default function AdminMenuPage() {
         name: menuForm.name,
         price: parseInt(menuForm.price),
         image: menuForm.image,
-        category: menuForm.category,
+        category: 'Meals',
         calories: menuForm.calories ? parseInt(menuForm.calories) : undefined,
         hasDiscountedDrinks: menuForm.hasDiscountedDrinks,
         available: menuForm.available
@@ -269,41 +269,26 @@ export default function AdminMenuPage() {
                     />
                     <p className="text-xs text-neutral-500 mt-1">For Imgur: Right-click image → "Open image in new tab" → Copy that URL (should end in .jpg/.png)</p>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm text-neutral-700 font-medium block mb-2">Category</label>
-                      <select
-                        value={menuForm.category}
-                        onChange={(e) => setMenuForm({ ...menuForm, category: e.target.value })}
-                        className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm"
-                      >
-                        <option value="Meals">Meals</option>
-                        <option value="Drinks">Drinks</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-sm text-neutral-700 font-medium block mb-2">Calories (optional)</label>
-                      <input
-                        type="number"
-                        value={menuForm.calories}
-                        onChange={(e) => setMenuForm({ ...menuForm, calories: e.target.value })}
-                        placeholder="e.g. 450"
-                        className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm"
-                      />
-                    </div>
+                  <div>
+                    <label className="text-sm text-neutral-700 font-medium block mb-2">Calories (optional)</label>
+                    <input
+                      type="number"
+                      value={menuForm.calories}
+                      onChange={(e) => setMenuForm({ ...menuForm, calories: e.target.value })}
+                      placeholder="e.g. 450"
+                      className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm"
+                    />
                   </div>
                   <div className="flex items-center gap-4">
-                    {menuForm.category === 'Meals' && (
-                      <label className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={menuForm.hasDiscountedDrinks}
-                          onChange={(e) => setMenuForm({ ...menuForm, hasDiscountedDrinks: e.target.checked })}
-                          className="w-4 h-4"
-                        />
-                        <span className="text-sm text-neutral-700">Drinks are discounted when ordered with this meal</span>
-                      </label>
-                    )}
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={menuForm.hasDiscountedDrinks}
+                        onChange={(e) => setMenuForm({ ...menuForm, hasDiscountedDrinks: e.target.checked })}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-sm text-neutral-700">Drinks are discounted when ordered with this meal</span>
+                    </label>
                     <label className="flex items-center gap-2">
                       <input
                         type="checkbox"
@@ -342,7 +327,7 @@ export default function AdminMenuPage() {
                   <img src={item.image} alt={item.name} onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }} className="w-20 h-20 rounded-lg object-cover" />
                   <div className="flex-1">
                     <h3 className="font-semibold text-neutral-900">{item.name}</h3>
-                    <p className="text-sm text-neutral-500">{item.category}{item.calories ? ` • ${item.calories} cal` : ''}</p>
+                    {item.calories && <p className="text-sm text-neutral-500">{item.calories} cal</p>}
                     <div className="flex items-center gap-3 mt-1">
                       <span className="text-[#86a349] font-semibold">HK$ {item.price}</span>
                       {item.hasDiscountedDrinks && (

@@ -6,23 +6,28 @@ import { useEffect, useState } from "react"
 import { useCart } from "@/contexts/CartContext"
 import { useAuth } from "@/contexts/AuthContext"
 import { logout } from "@/lib/auth"
-import { getAvailableMenuItems, type MenuItem } from "@/lib/menu"
+import { getAvailableMenuItems, getAvailableDrinks, type MenuItem, type Drink } from "@/lib/menu"
 
 export default function MenuPage() {
   const { addItem, itemCount } = useCart();
   const { user } = useAuth();
   const router = useRouter();
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [drinks, setDrinks] = useState<Drink[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchMenu() {
       try {
-        const items = await getAvailableMenuItems();
+        const [items, drinkItems] = await Promise.all([
+          getAvailableMenuItems(),
+          getAvailableDrinks()
+        ]);
         console.log('Fetched menu items:', items);
+        console.log('Fetched drinks:', drinkItems);
         console.log('Meals:', items.filter(item => item.category === 'Meals'));
-        console.log('Drinks:', items.filter(item => item.category === 'Drinks'));
         setMenuItems(items);
+        setDrinks(drinkItems);
       } catch (error) {
         console.error('Error fetching menu:', error);
       } finally {
@@ -126,32 +131,33 @@ export default function MenuPage() {
           </div>
         )}
 
-        {/* Drinks Section */}
-        {menuItems.filter(item => item.category === 'Drinks').length > 0 && (
+        {/* Drinks Section - from separate drinks collection */}
+        {drinks.length > 0 && (
           <div>
             <h2 className="text-xl font-semibold text-neutral-900 mb-4">Drinks</h2>
             <div className="grid grid-cols-1 gap-5">
-              {menuItems.filter(item => item.category === 'Drinks').map((item) => (
+              {drinks.map((drink) => (
                 <div
-                  key={item.$id}
+                  key={drink.$id}
                   className="bg-white border border-neutral-100 rounded-2xl p-4 hover:shadow-sm transition-shadow"
                 >
                   <div className="flex gap-4">
                     <img
-                      src={item.image || "/placeholder.svg"}
-                      alt={item.name}
+                      src={drink.image || "/placeholder.svg"}
+                      alt={drink.name}
                       onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
                       className="w-28 h-28 rounded-xl object-cover shrink-0"
                     />
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-neutral-900 mb-1">{item.name}</h3>
-                      {item.calories && (
-                        <p className="text-xs text-neutral-400 mb-2">{item.calories} cal</p>
-                      )}
+                      <h3 className="font-medium text-neutral-900 mb-1">{drink.name}</h3>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs text-neutral-400 line-through">HK$ {drink.originalPrice}</span>
+                        <span className="text-xs text-green-600 font-medium">HK$ {drink.discountedPrice} with meal</span>
+                      </div>
                       <div className="flex items-center justify-between mt-3">
-                        <span className="text-lg font-semibold text-[#86a349]">HK$ {item.price}</span>
+                        <span className="text-lg font-semibold text-[#86a349]">HK$ {drink.originalPrice}</span>
                         <button 
-                          onClick={() => addItem({ id: item.$id || '', name: item.name, price: item.price, image: item.image })}
+                          onClick={() => addItem({ id: drink.$id || '', name: drink.name, price: drink.originalPrice, image: drink.image })}
                           className="bg-[#86a349] hover:bg-[#748f3e] text-white rounded-lg h-9 px-6 text-sm font-medium transition-colors">
                           ADD ITEM
                         </button>
