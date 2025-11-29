@@ -19,6 +19,9 @@ export default function MenuPage() {
     async function fetchMenu() {
       try {
         const items = await getAvailableMenuItems();
+        console.log('Fetched menu items:', items);
+        console.log('Meals:', items.filter(item => item.category === 'Meals'));
+        console.log('Drinks:', items.filter(item => item.category === 'Drinks'));
         setMenuItems(items);
       } catch (error) {
         console.error('Error fetching menu:', error);
@@ -99,6 +102,7 @@ export default function MenuPage() {
                     <img
                       src={item.image || "/placeholder.svg"}
                       alt={item.name}
+                      onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
                       className="w-28 h-28 rounded-xl object-cover shrink-0"
                     />
                     <div className="flex-1 min-w-0">
@@ -136,6 +140,7 @@ export default function MenuPage() {
                     <img
                       src={item.image || "/placeholder.svg"}
                       alt={item.name}
+                      onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
                       className="w-28 h-28 rounded-xl object-cover shrink-0"
                     />
                     <div className="flex-1 min-w-0">
