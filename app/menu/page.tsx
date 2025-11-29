@@ -118,7 +118,7 @@ export default function MenuPage() {
                       <div className="flex items-center justify-between mt-3">
                         <span className="text-lg font-semibold text-[#86a349]">HK$ {item.price}</span>
                         <button 
-                          onClick={() => addItem({ id: item.$id || '', name: item.name, price: item.price, image: item.image })}
+                          onClick={() => addItem({ id: item.$id || '', name: item.name, price: item.price, image: item.image, type: 'meal', hasDiscountedDrinks: item.hasDiscountedDrinks })}
                           className="bg-[#86a349] hover:bg-[#748f3e] text-white rounded-lg h-9 px-6 text-sm font-medium transition-colors">
                           ADD ITEM
                         </button>
@@ -157,7 +157,7 @@ export default function MenuPage() {
                       <div className="flex items-center justify-between mt-3">
                         <span className="text-lg font-semibold text-[#86a349]">HK$ {drink.originalPrice}</span>
                         <button 
-                          onClick={() => addItem({ id: drink.$id || '', name: drink.name, price: drink.originalPrice, image: drink.image })}
+                          onClick={() => addItem({ id: drink.$id || '', name: drink.name, price: drink.originalPrice, image: drink.image, type: 'drink', originalPrice: drink.originalPrice, discountedPrice: drink.discountedPrice })}
                           className="bg-[#86a349] hover:bg-[#748f3e] text-white rounded-lg h-9 px-6 text-sm font-medium transition-colors">
                           ADD ITEM
                         </button>

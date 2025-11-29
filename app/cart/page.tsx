@@ -9,6 +9,7 @@ import { useState } from "react"
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, total, itemCount } = useCart();
   const router = useRouter();
+  const hasMealWithDiscountedDrinks = items.some(item => item.type === 'meal' && item.hasDiscountedDrinks);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCheckout = async () => {
@@ -96,8 +97,16 @@ export default function CartPage() {
                     )}
                     <div className="flex-1">
                       <h3 className="font-medium text-neutral-900 mb-2">{item.name}</h3>
+                      {item.type === 'drink' && hasMealWithDiscountedDrinks && item.discountedPrice && (
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs text-neutral-400 line-through">HK$ {item.originalPrice}</span>
+                          <span className="text-xs text-green-600 font-medium">Discounted with meal!</span>
+                        </div>
+                      )}
                       <div className="flex items-center justify-between">
-                        <span className="text-lg font-semibold text-[#86a349]">HK$ {item.price}</span>
+                        <span className="text-lg font-semibold text-[#86a349]">
+                          HK$ {item.type === 'drink' && hasMealWithDiscountedDrinks && item.discountedPrice ? item.discountedPrice : item.price}
+                        </span>
                         <div className="flex items-center gap-3">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}

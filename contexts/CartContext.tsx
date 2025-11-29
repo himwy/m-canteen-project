@@ -8,6 +8,10 @@ interface CartItem {
   price: number;
   quantity: number;
   image?: string;
+  type?: 'meal' | 'drink';
+  originalPrice?: number;
+  discountedPrice?: number;
+  hasDiscountedDrinks?: boolean;
 }
 
 interface CartContextType {
@@ -55,7 +59,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
   };
 
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const hasMealWithDiscountedDrinks = items.some(item => item.type === 'meal' && item.hasDiscountedDrinks);
+  
+  const total = items.reduce((sum, item) => {
+    // If it's a drink and there's a meal with discounted drinks in cart, use discounted price
+    if (item.type === 'drink' && hasMealWithDiscountedDrinks && item.discountedPrice) {
+      return sum + item.discountedPrice * item.quantity;
+    }
+    return sum + item.price * item.quantity;
+  }, 0);
+  
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
