@@ -23,10 +23,6 @@ export default function HomePage() {
           <Link href="/register" className="w-full h-12 text-base border-2 border-neutral-200 bg-white hover:bg-neutral-50 rounded-xl flex items-center justify-center font-medium transition-colors">
             Register as Student
           </Link>
-
-          <Link href="/admin/login" className="w-full h-12 text-base text-neutral-500 hover:bg-neutral-50 rounded-xl flex items-center justify-center font-medium transition-colors">
-            Admin Login
-          </Link>
         </div>
       </div>
     </main>
