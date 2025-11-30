@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useState, FormEvent } from "react"
-import { registerStudent } from "@/lib/auth"
-import { useAuth } from "@/contexts/AuthContext"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, FormEvent } from "react";
+import { registerStudent } from "@/lib/auth";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -20,10 +20,12 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -46,15 +48,30 @@ export default function RegisterPage() {
   return (
     <main className="min-h-screen bg-white">
       <div className="container mx-auto px-6 py-8 max-w-md">
-        <Link href="/" className="inline-flex items-center text-neutral-500 mb-12 hover:text-neutral-900">
-          <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <Link
+          href="/"
+          className="inline-flex items-center text-neutral-500 mb-12 hover:text-neutral-900"
+        >
+          <svg
+            className="w-5 h-5 mr-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back
         </Link>
 
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-neutral-900 mb-2">Create account</h1>
+          <h1 className="text-2xl font-semibold text-neutral-900 mb-2">
+            Create account
+          </h1>
           <p className="text-neutral-500">Register as HSU student</p>
         </div>
 
@@ -66,23 +83,29 @@ export default function RegisterPage() {
           )}
 
           <div className="space-y-2">
-            <label htmlFor="name" className="text-sm text-neutral-700 font-medium">
+            <label
+              htmlFor="name"
+              className="text-sm text-neutral-700 font-medium"
+            >
               Full Name
             </label>
-            <input 
-              id="name" 
+            <input
+              id="name"
               name="name"
-              type="text" 
-              placeholder="John Doe" 
+              type="text"
+              placeholder="John Doe"
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full h-12 border border-neutral-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#86a349]" 
+              className="w-full h-12 border border-neutral-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#86a349]"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="email" className="text-sm text-neutral-700 font-medium">
+            <label
+              htmlFor="email"
+              className="text-sm text-neutral-700 font-medium"
+            >
               Email
             </label>
             <input
@@ -98,27 +121,33 @@ export default function RegisterPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="studentId" className="text-sm text-neutral-700 font-medium">
+            <label
+              htmlFor="studentId"
+              className="text-sm text-neutral-700 font-medium"
+            >
               Student ID <span className="text-[#86a349]">*</span>
             </label>
-            <input 
-              id="studentId" 
+            <input
+              id="studentId"
               name="studentId"
-              type="text" 
-              placeholder="s123456" 
+              type="text"
+              placeholder="s123456"
               value={formData.studentId}
               onChange={handleChange}
               required
-              className="w-full h-12 border border-neutral-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#86a349]" 
+              className="w-full h-12 border border-neutral-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#86a349]"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="programme" className="text-sm text-neutral-700 font-medium">
+            <label
+              htmlFor="programme"
+              className="text-sm text-neutral-700 font-medium"
+            >
               Programme <span className="text-[#86a349]">*</span>
             </label>
-            <select 
-              id="programme" 
+            <select
+              id="programme"
               name="programme"
               value={formData.programme}
               onChange={handleChange}
@@ -132,11 +161,14 @@ export default function RegisterPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="yearOfEntrance" className="text-sm text-neutral-700 font-medium">
+            <label
+              htmlFor="yearOfEntrance"
+              className="text-sm text-neutral-700 font-medium"
+            >
               Year of Study <span className="text-[#86a349]">*</span>
             </label>
-            <select 
-              id="yearOfEntrance" 
+            <select
+              id="yearOfEntrance"
               name="yearOfEntrance"
               value={formData.yearOfEntrance}
               onChange={handleChange}
@@ -153,7 +185,10 @@ export default function RegisterPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="password" className="text-sm text-neutral-700 font-medium">
+            <label
+              htmlFor="password"
+              className="text-sm text-neutral-700 font-medium"
+            >
               Password
             </label>
             <input
@@ -169,7 +204,7 @@ export default function RegisterPage() {
             />
           </div>
 
-          <button 
+          <button
             type="submit"
             disabled={loading}
             className="w-full h-12 text-base bg-[#86a349] hover:bg-[#748f3e] text-white rounded-xl mt-6 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -186,5 +221,5 @@ export default function RegisterPage() {
         </form>
       </div>
     </main>
-  )
+  );
 }

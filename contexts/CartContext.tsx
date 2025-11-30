@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface CartItem {
   id: string;
@@ -8,7 +8,7 @@ interface CartItem {
   price: number;
   quantity: number;
   image?: string;
-  type?: 'meal' | 'drink';
+  type?: "meal" | "drink";
   originalPrice?: number;
   discountedPrice?: number;
   hasDiscountedDrinks?: boolean;
@@ -16,7 +16,7 @@ interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, 'quantity'>) => void;
+  addItem: (item: Omit<CartItem, "quantity">) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -29,11 +29,11 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const addItem = (item: Omit<CartItem, 'quantity'>) => {
-    setItems(prev => {
-      const existing = prev.find(i => i.id === item.id);
+  const addItem = (item: Omit<CartItem, "quantity">) => {
+    setItems((prev) => {
+      const existing = prev.find((i) => i.id === item.id);
       if (existing) {
-        return prev.map(i =>
+        return prev.map((i) =>
           i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
         );
       }
@@ -42,7 +42,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeItem = (id: string) => {
-    setItems(prev => prev.filter(i => i.id !== id));
+    setItems((prev) => prev.filter((i) => i.id !== id));
   };
 
   const updateQuantity = (id: string, quantity: number) => {
@@ -50,9 +50,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeItem(id);
       return;
     }
-    setItems(prev =>
-      prev.map(i => (i.id === id ? { ...i, quantity } : i))
-    );
+    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, quantity } : i)));
   };
 
   const clearCart = () => {
@@ -60,34 +58,59 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   // Count meals with discount and total drinks
-  const mealsWithDiscountCount = items.reduce((count, item) => 
-    item.type === 'meal' && item.hasDiscountedDrinks ? count + item.quantity : count, 0
+  const mealsWithDiscountCount = items.reduce(
+    (count, item) =>
+      item.type === "meal" && item.hasDiscountedDrinks
+        ? count + item.quantity
+        : count,
+    0
   );
-  const totalDrinks = items.reduce((count, item) => 
-    item.type === 'drink' ? count + item.quantity : count, 0
+  const totalDrinks = items.reduce(
+    (count, item) => (item.type === "drink" ? count + item.quantity : count),
+    0
   );
-  
+
   const total = items.reduce((sum, item) => {
     // If it's a drink, apply discount to min(drinks, meals with discount)
-    if (item.type === 'drink' && item.discountedPrice) {
-      const discountedDrinkCount = Math.min(totalDrinks, mealsWithDiscountCount);
+    if (item.type === "drink" && item.discountedPrice) {
+      const discountedDrinkCount = Math.min(
+        totalDrinks,
+        mealsWithDiscountCount
+      );
       const drinksProcessedSoFar = items
-        .filter(i => i.type === 'drink' && items.indexOf(i) < items.indexOf(item))
+        .filter(
+          (i) => i.type === "drink" && items.indexOf(i) < items.indexOf(item)
+        )
         .reduce((c, i) => c + i.quantity, 0);
-      
-      const thisItemDiscounted = Math.max(0, Math.min(item.quantity, discountedDrinkCount - drinksProcessedSoFar));
+
+      const thisItemDiscounted = Math.max(
+        0,
+        Math.min(item.quantity, discountedDrinkCount - drinksProcessedSoFar)
+      );
       const thisItemRegular = item.quantity - thisItemDiscounted;
-      
-      return sum + (thisItemDiscounted * item.discountedPrice) + (thisItemRegular * item.price);
+
+      return (
+        sum +
+        thisItemDiscounted * item.discountedPrice +
+        thisItemRegular * item.price
+      );
     }
     return sum + item.price * item.quantity;
   }, 0);
-  
+
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, clearCart, total, itemCount }}
+      value={{
+        items,
+        addItem,
+        removeItem,
+        updateQuantity,
+        clearCart,
+        total,
+        itemCount,
+      }}
     >
       {children}
     </CartContext.Provider>
@@ -97,7 +120,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within CartProvider');
+    throw new Error("useCart must be used within CartProvider");
   }
   return context;
 }

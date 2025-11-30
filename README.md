@@ -5,12 +5,14 @@ A modern canteen ordering system for HSU students with real-time order managemen
 ## Features
 
 ### Student Side
+
 - Browse menu and add items to cart
 - Place orders that get assigned a unique order number
 - Track order status in real-time (Received → Preparing → Ready → Taken → Completed)
 - View order history
 
 ### Admin Side (Canteen/Shop)
+
 - View all incoming orders in real-time
 - Manage order workflow through different statuses:
   - **Received**: New orders waiting to be prepared
@@ -28,12 +30,14 @@ A modern canteen ordering system for HSU students with real-time order managemen
 1. **Create an Appwrite project** at [cloud.appwrite.io](https://cloud.appwrite.io)
 
 2. **Enable Email/Password Authentication:**
+
    - Go to **Auth** section in your Appwrite project
    - Make sure **Email/Password** is enabled under "Auth Methods"
 
 3. **Create a new database**
 
 4. **Create an Orders collection** with the following attributes:
+
    - `orderNumber` (integer, required)
    - `studentName` (string, required, size: 255)
    - `studentId` (string, required, size: 50)
@@ -78,7 +82,9 @@ npm run dev
 ## Authentication Flow
 
 ### Student Registration & Login
+
 1. Students register with:
+
    - Full name
    - Email
    - Student ID
@@ -91,6 +97,7 @@ npm run dev
 4. Students can logout from the menu page
 
 ### Order Creation
+
 - Orders automatically use the logged-in user's name and student ID
 - Student ID is stored in user preferences and linked to orders
 
