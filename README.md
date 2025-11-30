@@ -64,7 +64,13 @@ NEXT_PUBLIC_APPWRITE_PROJECT_ID=your-project-id
 NEXT_PUBLIC_APPWRITE_DATABASE_ID=your-database-id
 NEXT_PUBLIC_APPWRITE_ORDERS_COLLECTION_ID=your-orders-collection-id
 NEXT_PUBLIC_APPWRITE_MENU_COLLECTION_ID=your-menu-collection-id
+NEXT_PUBLIC_APPWRITE_DRINKS_COLLECTION_ID=your-drinks-collection-id
+
+# API Security - Change this to a secure random token
+API_TOKEN=your-secure-api-token-here
 \`\`\`
+
+**Note:** The `API_TOKEN` is used to protect the student data API endpoint. Generate a secure random token and share it only with authorized HSU personnel.
 
 ### 3. Install & Run
 
