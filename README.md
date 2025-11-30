@@ -2,6 +2,8 @@
 
 A modern canteen ordering system for HSU students with real-time order management.
 
+**🔗 Prototype Website:** https://m-canteen-project.vercel.app/
+
 ## Features
 
 ### Student Side
