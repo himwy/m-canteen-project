@@ -33,9 +33,12 @@ export default function CartPage() {
         return;
       }
 
-      await createOrder({
+      const studentId = user.prefs?.studentId || "N/A";
+      console.log("Creating order for studentId:", studentId);
+
+      const order = await createOrder({
         studentName: user.name,
-        studentId: user.prefs?.studentId || "N/A",
+        studentId: studentId,
         items: items.map((item) => ({
           name: item.name,
           quantity: item.quantity,
@@ -45,6 +48,7 @@ export default function CartPage() {
         status: "received",
       });
 
+      console.log("Order created:", order);
       clearCart();
       router.push("/orders");
     } catch (error) {

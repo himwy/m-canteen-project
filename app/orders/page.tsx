@@ -17,11 +17,14 @@ export default function OrdersPage() {
       const user = await getCurrentUser();
 
       if (!user || !user.prefs?.studentId) {
+        console.log("No user or studentId found");
         setLoading(false);
         return;
       }
 
+      console.log("Fetching orders for studentId:", user.prefs.studentId);
       const fetchedOrders = await getOrdersByStudent(user.prefs.studentId);
+      console.log("Fetched orders:", fetchedOrders);
       setOrders(fetchedOrders);
     } catch (error) {
       console.error("Error fetching orders:", error);
